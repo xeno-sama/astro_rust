@@ -167,6 +167,16 @@ pub(crate) fn ecl2_equ_vec(time: f64, ecl: Vec<f64>) -> [f64; 3] {
     ]
 }
 //
+pub(crate) fn precession(pos: [f64; 3], time: f64, direction: &str) -> [f64; 3] {
+    let r = precession_rot(time, direction);
+    rotate(r, pos)
+}
+//
+pub(crate) fn nutation(pos: [f64; 3], time: f64, direction: &str)-> [f64; 3] {
+    let r = nutation_rot(time, direction) ;
+    rotate(r, pos)
+}
+// разобраться с конфликтом RotationMatrix и [f64; 3]
 pub(crate) fn rotate(rot: RotationMatrix, vec: [f64; 3]) -> [f64; 3] {
     [
         rot.rot[0][0] * vec[0] + rot.rot[1][0] * vec[1] + rot.rot[2][0] * vec[2],
@@ -175,12 +185,7 @@ pub(crate) fn rotate(rot: RotationMatrix, vec: [f64; 3]) -> [f64; 3] {
     ]
 }
 //
-pub(crate) fn precession(pos: [f64; 3], time: f64, direction: &str) -> [f64; 3] {
-    let r = precession_rot(time, direction);
-    rotate(r, pos)
-}
-//
-pub(crate) fn nutation_rot(time: f64, direction: &str) -> [[f64; 3]; 3]{
+pub(crate) fn nutation_rot(time: f64, direction: &str) -> RotationMatrix{
   let tilt = iau2000b(time);
 
   let oblm = (tilt.mobl).to_radians();
@@ -206,27 +211,32 @@ pub(crate) fn nutation_rot(time: f64, direction: &str) -> [[f64; 3]; 3]{
   if direction == PD.from2000
   // convert J2000 to of-date
   {
-    [
+      RotationMatrix { rot: [
       [xx, xy, xz],
       [yx, yy, yz],
       [zx, zy, zz]
-    ]
+    ] }
+     
   } else
-  // if (direction == PrecessDir.into2000)
-  // convert of-date to J2000
+  // direction == PrecessDir.into2000 convert of-date to J2000
   {
-    [
+    RotationMatrix { rot: [
       [xx, yx, zx],
       [xy, yy, zy],
       [xz, yz, zz]
-    ]
+    ]}
   }
 }
 //
-// pub(crate) fn nutation(pos: [f64; 3], time: f64, direction: &str) {
-//     let r = nutation_rot(time, direction);
-//     rotate(r, pos);
-// }
+pub(crate) fn geo_pos(time: f64, observer: Observer)-> [f64; 3] {
+  let gast = sidereal_time(time);
+  let pos1 = terra(observer, gast);
+  let pos2 = nutation(pos1, time, PD.into2000);
+  let outpos = precession(pos2, time, PD.into2000);
+  // print("nutation $pos2");
+  outpos
+}
+//
 pub(crate) fn iau2000b(time: f64) -> Etilt {
     //   double t, el, elp, f, d, om, dp, de, arg, sarg, carg, dpsi, deps;
     let t = time / 36525.0;

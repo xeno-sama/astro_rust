@@ -61,6 +61,7 @@ impl TerseVector {
 // RotationMatrix - contains a rotation matrix 3x3 that can be used to
 // transform one coordinate system into another.
 pub struct RotationMatrix {
+    // pub rot: [[f64; 3]; 3],
     pub rot: [[f64; 3]; 3],
 }
 
