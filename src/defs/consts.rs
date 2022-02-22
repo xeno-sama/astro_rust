@@ -1,42 +1,31 @@
 use std::f64::consts::PI;
-
+use strum_macros::EnumIter;
+#[derive(Debug, EnumIter, PartialEq)]
+//
+pub enum Body {
+    Mercury, //0
+    Venus,   //1
+    Earth,   //2
+    Mars,    //3
+    Jupiter, //4
+    Saturn,  //5
+    Uranus,  //6
+    Neptune, //7
+    Pluto,   //8
+    Sun,     //9
+    Moon,    //10
+}
+//
 pub struct PrecessDir<'a> {
     pub from2000: &'a str, // 0
     pub into2000: &'a str, // 1
 }
-
-pub struct BodyPlanets<'a> {
-    pub mercury: &'a str, //0
-    pub venus: &'a str,   //1
-    pub earth: &'a str,   //2
-    pub mars: &'a str,    //3
-    pub jupiter: &'a str, //4
-    pub saturn: &'a str,  //5
-    pub uranus: &'a str,  //6
-    pub neptune: &'a str, //7
-    pub pluto: &'a str,   //8
-    pub sun: &'a str,     //9
-    pub moon: &'a str,    //10
-}
+//
 pub const PD: PrecessDir = PrecessDir {
     from2000: "from2000",
     into2000: "into2000",
 };
-
-pub const BODY: BodyPlanets = BodyPlanets {
-    mercury: "Mercury",
-    venus: "Venus",
-    earth: "earth",
-    mars: "mars",
-    jupiter: "jupiter",
-    saturn: "saturn",
-    uranus: "uranus",
-    neptune: "neptune",
-    pluto: "pluto",
-    sun: "sun",
-    moon: "moon",
-};
-
+//
 pub const ANGVEL: f64 = 7.2921150e-5;
 pub const EARTH_FLATTENING: f64 = 0.996647180302104;
 

@@ -73,3 +73,14 @@ pub struct Etilt {
     pub ee: f64,
     pub tt: f64,
 }
+
+pub struct Natal {
+    pub year: i32,
+    pub month: u32,
+    pub day: u32,
+    pub hour: u32,
+    pub minute: u32,
+    pub sec: u32,
+    pub lat: f64,
+    pub lon: f64,
+}
