@@ -1,4 +1,4 @@
-#![allow(unused_variables, unused_assignments, unused_imports, dead_code)]
+// #![allow(unused_variables, unused_assignments, unused_imports, dead_code)]
 use crate::defs::consts::*;
 use crate::defs::structs::*;
 use chrono::prelude::*;
@@ -172,8 +172,8 @@ pub(crate) fn precession(pos: [f64; 3], time: f64, direction: &str) -> [f64; 3] 
     rotate(r, pos)
 }
 //
-pub(crate) fn nutation(pos: [f64; 3], time: f64, direction: &str)-> [f64; 3] {
-    let r = nutation_rot(time, direction) ;
+pub(crate) fn nutation(pos: [f64; 3], time: f64, direction: &str) -> [f64; 3] {
+    let r = nutation_rot(time, direction);
     rotate(r, pos)
 }
 // разобраться с конфликтом RotationMatrix и [f64; 3]
@@ -185,56 +185,51 @@ pub(crate) fn rotate(rot: RotationMatrix, vec: [f64; 3]) -> [f64; 3] {
     ]
 }
 //
-pub(crate) fn nutation_rot(time: f64, direction: &str) -> RotationMatrix{
-  let tilt = iau2000b(time);
+pub(crate) fn nutation_rot(time: f64, direction: &str) -> RotationMatrix {
+    let tilt = iau2000b(time);
 
-  let oblm = (tilt.mobl).to_radians();
-  let oblt = (tilt.tobl).to_radians();
-  let psi = tilt.dpsi * ASEC2RAD;
-  let cobm = (oblm).cos();
-  let sobm = (oblm).sin();
-  let cobt = (oblt).cos();
-  let sobt = (oblt).sin();
-  let cpsi = (psi).cos();
-  let spsi = (psi).sin();
+    let oblm = (tilt.mobl).to_radians();
+    let oblt = (tilt.tobl).to_radians();
+    let psi = tilt.dpsi * ASEC2RAD;
+    let cobm = (oblm).cos();
+    let sobm = (oblm).sin();
+    let cobt = (oblt).cos();
+    let sobt = (oblt).sin();
+    let cpsi = (psi).cos();
+    let spsi = (psi).sin();
 
-  let xx = cpsi;
-  let yx = -spsi * cobm;
-  let zx = -spsi * sobm;
-  let xy = spsi * cobt;
-  let yy = cpsi * cobm * cobt + sobm * sobt;
-  let zy = cpsi * sobm * cobt - cobm * sobt;
-  let xz = spsi * sobt;
-  let yz = cpsi * cobm * sobt - sobm * cobt;
-  let zz = cpsi * sobm * sobt + cobm * cobt;
+    let xx = cpsi;
+    let yx = -spsi * cobm;
+    let zx = -spsi * sobm;
+    let xy = spsi * cobt;
+    let yy = cpsi * cobm * cobt + sobm * sobt;
+    let zy = cpsi * sobm * cobt - cobm * sobt;
+    let xz = spsi * sobt;
+    let yz = cpsi * cobm * sobt - sobm * cobt;
+    let zz = cpsi * sobm * sobt + cobm * cobt;
 
-  if direction == PD.from2000
-  // convert J2000 to of-date
-  {
-      RotationMatrix { rot: [
-      [xx, xy, xz],
-      [yx, yy, yz],
-      [zx, zy, zz]
-    ] }
-     
-  } else
-  // direction == PrecessDir.into2000 convert of-date to J2000
-  {
-    RotationMatrix { rot: [
-      [xx, yx, zx],
-      [xy, yy, zy],
-      [xz, yz, zz]
-    ]}
-  }
+    if direction == PD.from2000
+    // convert J2000 to of-date
+    {
+        RotationMatrix {
+            rot: [[xx, xy, xz], [yx, yy, yz], [zx, zy, zz]],
+        }
+    } else
+    // direction == PrecessDir.into2000 convert of-date to J2000
+    {
+        RotationMatrix {
+            rot: [[xx, yx, zx], [xy, yy, zy], [xz, yz, zz]],
+        }
+    }
 }
 //
-pub(crate) fn geo_pos(time: f64, observer: Observer)-> [f64; 3] {
-  let gast = sidereal_time(time);
-  let pos1 = terra(observer, gast);
-  let pos2 = nutation(pos1, time, PD.into2000);
-  let outpos = precession(pos2, time, PD.into2000);
-  // print("nutation $pos2");
-  outpos
+pub(crate) fn geo_pos(time: f64, observer: Observer) -> [f64; 3] {
+    let gast = sidereal_time(time);
+    let pos1 = terra(observer, gast);
+    let pos2 = nutation(pos1, time, PD.into2000);
+    let outpos = precession(pos2, time, PD.into2000);
+    // print("nutation $pos2");
+    outpos
 }
 //
 pub(crate) fn iau2000b(time: f64) -> Etilt {

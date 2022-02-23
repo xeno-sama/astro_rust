@@ -3,6 +3,8 @@ use crate::defs::consts::*;
 use crate::defs::espenac;
 use crate::defs::structs::*;
 use chrono::prelude::*;
+
+use super::funcs::geo_pos;
 //
 // # -------------------------
 // # 1. Парсинг входной даты
@@ -30,3 +32,6 @@ pub(crate) fn make(data: DateTime<Utc>) -> f64 {
 // # ------------------------
 // # 3. секция ГЕЛИОЦЕНТРИКИ
 // # ------------------------
+pub(crate) fn geo_lon(body: Body, time: f64, observer: Observer) -> [f64; 3] {
+    geo_pos(time, observer)
+}

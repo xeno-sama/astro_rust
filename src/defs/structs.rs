@@ -14,7 +14,7 @@ impl Vector {
 
 pub struct EclipticCoordinates {
     // Ecliptic angular and Cartesian coordinates.
-    pub vec: Vec<f64>,
+    pub vec: Vector,
     pub elat: f64,
     pub elon: f64,
 }

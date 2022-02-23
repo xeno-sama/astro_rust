@@ -1,4 +1,6 @@
 #![allow(unused_variables, unused_assignments, unused_imports, dead_code)]
+use std::collections::HashMap;
+
 // #[derive(Debug)]
 use chrono::prelude::*;
 mod defs;
@@ -26,13 +28,24 @@ fn main() {
             .and_hms(natal.hour, natal.minute, natal.sec);
 
     let (observer, time) = astronomy::parse_args(data, natal.lat, natal.lon);
+    let gm = astronomy::geo_lon(consts::Body::Pluto, time, observer);
 
-    for body in consts::Body::iter() {
-        if body == consts::Body::Pluto {
-            println!("{:?}", body);
+    let tmp = [1, 2, 3];
+    let i = 4;
+    // let tm = test(0, i, tmp);
+
+    fn test(mut y: i32, i: i32, tmp: [i32; 3]) -> i32 {
+        for x in tmp {
+            if x <= i {
+                y += x;
+                println!("{y}")
+            } else {
+                y += 10;
+            }
         }
+        return y;
     }
+    let dict = HashMap::from([(1, 3), (2, 31)]);
 
-    //
-    // println!("{:?} {:?}", time, observer.latitude)
+    println!("{:?}", dict[&2])
 }
