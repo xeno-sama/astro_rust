@@ -5,3 +5,5 @@ pub mod espenac;
 pub mod funcs;
 pub mod rotate_vector;
 pub mod structs;
+pub mod useful;
+pub mod vsop;

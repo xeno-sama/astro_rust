@@ -30,12 +30,12 @@ pub(crate) fn time_ra(ra: f64) -> Vec<i32> {
     [h_ra, m_ra, s_ra].to_vec()
 }
 //
-pub(crate) fn num_date(dat: DateTime<Utc>) -> f64 {
-    let m1 = 7 * (dat.year() + (dat.month() as i32 + 9) / 12) / 4;
-    let m2 = 3 * ((dat.year() + (dat.month() as i32 - 9) / 7) / 100 + 1) / 4;
-    let m3 = 275 * (dat.month() as i32) / 9;
-    let ut = dat.hour() as f64 + dat.minute() as f64 / 60.0;
-    let _d = 367 * dat.year() - m1 - m2 + m3 + (dat.day() as i32) - 730515;
+pub(crate) fn num_date(data: DateTime<Utc>) -> f64 {
+    let m1 = 7 * (data.year() + (data.month() as i32 + 9) / 12) / 4;
+    let m2 = 3 * ((data.year() + (data.month() as i32 - 9) / 7) / 100 + 1) / 4;
+    let m3 = 275 * (data.month() as i32) / 9;
+    let ut = data.hour() as f64 + data.minute() as f64 / 60.0;
+    let _d = 367 * data.year() - m1 - m2 + m3 + (data.day() as i32) - 730515;
     _d as f64 + ut / 24.0
 }
 //

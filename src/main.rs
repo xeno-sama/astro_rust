@@ -28,24 +28,28 @@ fn main() {
             .and_hms(natal.hour, natal.minute, natal.sec);
 
     let (observer, time) = astronomy::parse_args(data, natal.lat, natal.lon);
-    let gm = astronomy::geo_lon(consts::Body::Pluto, time, observer);
 
-    let tmp = [1, 2, 3];
-    let i = 4;
-    // let tm = test(0, i, tmp);
+    let body_list: [usize;7] = [0, 1, 2, 3, 4, 5, 6]; //, 7, 8, 9
+    // Mercury_0,Venus_1,Earth_2,Mars_3,Jupiter_4,Saturn_5,Uranus_6,Neptune_7,Pluto_8,Sun_9,Moon_10
 
-    fn test(mut y: i32, i: i32, tmp: [i32; 3]) -> i32 {
-        for x in tmp {
-            if x <= i {
-                y += x;
-                println!("{y}")
-            } else {
-                y += 10;
-            }
-        }
-        return y;
+    for body in body_list {
+        let gm = astronomy::helio_eclip_lon(body, time);
+        println!("{gm}");
     }
-    let dict = HashMap::from([(1, 3), (2, 31)]);
+    
 
-    println!("{:?}", dict[&2])
+    let dt = funcs::num_date(data);
+    // println!("{:?} {}", gm, dt);
 }
+
+// let mut incr = 0.0;
+//     let mut incr_sum = 0.0;
+//     let _vsop = &consts::vsop()[0];
+//     for val in &_vsop[1][1] {
+//         incr = 0.0;
+//         for i in val {
+//             incr += i
+//         }
+//         incr_sum += incr;
+//     }
+//     println!("{incr_sum}");
