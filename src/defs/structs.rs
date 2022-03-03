@@ -1,5 +1,6 @@
 #![allow(unused_variables, unused_assignments, unused_imports, dead_code)]
-
+#[derive(Debug)]
+//
 pub struct Vector {
     pub x: f64,
     pub y: f64,
@@ -60,6 +61,7 @@ impl TerseVector {
 }
 // RotationMatrix - contains a rotation matrix 3x3 that can be used to
 // transform one coordinate system into another.
+#[derive(Debug)]
 pub struct RotationMatrix {
     // pub rot: [[f64; 3]; 3],
     pub rot: [[f64; 3]; 3],
@@ -83,4 +85,10 @@ pub struct Natal {
     pub sec: u32,
     pub lat: f64,
     pub lon: f64,
+}
+
+pub struct MoonPos {
+    pub lon: f64,
+    pub lat: f64,
+    pub dist: f64,
 }

@@ -1,9 +1,6 @@
 // # -------------------------
 // # Преобразование координат
 // # -------------------------
-// use crate::defs::funcs;
-// use crate::defs::structs;
-
 use super::structs::EclipticCoordinates;
 use super::structs::TerseVector;
 use super::structs::Vector;

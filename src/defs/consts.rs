@@ -1,20 +1,5 @@
 use std::f64::consts::PI;
-use strum_macros::EnumIter;
-#[derive(Debug, EnumIter, PartialEq)]
-//
-pub enum Body {
-    Mercury, //0
-    Venus,   //1
-    Earth,   //2
-    Mars,    //3
-    Jupiter, //4
-    Saturn,  //5
-    Uranus,  //6
-    Neptune, //7
-    Pluto,   //8
-    Sun,     //9
-    Moon,    //10
-}
+
 //
 pub struct PrecessDir<'a> {
     pub from2000: &'a str, // 0
@@ -65,7 +50,7 @@ pub const PLUTO_NSTEPS: u32 = 201;
 
 pub fn vsop() -> Vec<Vec<Vec<Vec<Vec<f64>>>>> {
     vec![
-        // Mercury
+        // Mercury 0
         vec![
             vec![
                 vec![
@@ -115,7 +100,7 @@ pub fn vsop() -> Vec<Vec<Vec<Vec<Vec<f64>>>>> {
                 ],
             ],
         ],
-        // Venus
+        // Venus 1
         vec![
             vec![
                 vec![
@@ -158,7 +143,7 @@ pub fn vsop() -> Vec<Vec<Vec<Vec<Vec<f64>>>>> {
                 vec![vec![0.00034551041, 0.89198706276, 10213.28554621100]],
             ],
         ],
-        // Earth
+        // Earth 2
         vec![
             vec![
                 vec![
@@ -690,4 +675,3 @@ pub fn vsop() -> Vec<Vec<Vec<Vec<Vec<f64>>>>> {
         ],
     ]
 }
-// pub const VSOP: Vec<Vec<Vec<Vec<Vec<f64>>>>> = vsop();

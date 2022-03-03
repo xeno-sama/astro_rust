@@ -2,6 +2,8 @@
 use crate::defs::consts::*;
 use crate::defs::structs::*;
 use chrono::prelude::*;
+
+use super::structs;
 //
 pub(crate) fn fmod(x: f64, y: f64) -> f64 {
     x - (x / y).trunc() * y
@@ -73,7 +75,7 @@ pub(crate) fn era(time: f64) -> f64 {
     }
 }
 //
-pub(crate) fn terra_posvel(observer: Observer, st: f64) -> [f64; 3] {
+pub(crate) fn terra_posvel(observer: &structs::Observer, st: f64) -> [f64; 3] {
     let df2 = EARTH_FLATTENING * EARTH_FLATTENING;
     let phi = (observer.latitude).to_radians();
     let sinphi = (phi).sin();
@@ -92,13 +94,19 @@ pub(crate) fn terra_posvel(observer: Observer, st: f64) -> [f64; 3] {
     ]
 }
 //
-pub(crate) fn terra(observer: Observer, st: f64) -> [f64; 3] {
+pub(crate) fn terra(observer: &structs::Observer, st: f64) -> [f64; 3] {
     terra_posvel(observer, st)
+}
+//
+pub(crate) fn precession(pos: [f64; 3], time: f64, direction: &str) -> [f64; 3] {
+    let r = precession_rot(time, direction);
+    // println!("{:?}", r.rot); // not OK
+    rotate(r, pos)
 }
 //
 pub(crate) fn precession_rot(time: f64, direction: &str) -> RotationMatrix {
     let mut eps0 = 84381.406;
-    let t = time / DAYS_PER_MILLENNIUM;
+    let t = time / 36525.0;
 
     let mut psia = ((((-0.0000000951 * t + 0.000132851) * t - 0.00114045) * t - 1.0790069) * t
         + 5038.481507)
@@ -119,10 +127,10 @@ pub(crate) fn precession_rot(time: f64, direction: &str) -> RotationMatrix {
 
     let sa = eps0.sin();
     let ca = eps0.cos();
-    let sb = -psia.sin();
-    let cb = -psia.cos();
-    let sc = -omegaa.sin();
-    let cc = -omegaa.cos();
+    let sb = (-psia).sin();
+    let cb = (-psia).cos();
+    let sc = (-omegaa).sin();
+    let cc = (-omegaa).cos();
     let sd = chia.sin();
     let cd = chia.cos();
 
@@ -148,7 +156,7 @@ pub(crate) fn precession_rot(time: f64, direction: &str) -> RotationMatrix {
 }
 
 pub(crate) fn mean_oblig(time: f64) -> f64 {
-    let t = time / DAYS_PER_MILLENNIUM;
+    let t = time / 36525.0;
     let asec = ((((-0.0000000434 * t - 0.000000576) * t + 0.00200340) * t - 0.0001831) * t
         - 46.836769)
         * t
@@ -165,11 +173,6 @@ pub(crate) fn ecl2_equ_vec(time: f64, ecl: Vec<f64>) -> [f64; 3] {
         ecl[1] * obl_cos - ecl[2] * obl_sin,
         ecl[2] * obl_sin + ecl[2] * obl_cos,
     ]
-}
-//
-pub(crate) fn precession(pos: [f64; 3], time: f64, direction: &str) -> [f64; 3] {
-    let r = precession_rot(time, direction);
-    rotate(r, pos)
 }
 //
 pub(crate) fn nutation(pos: [f64; 3], time: f64, direction: &str) -> [f64; 3] {
@@ -223,7 +226,7 @@ pub(crate) fn nutation_rot(time: f64, direction: &str) -> RotationMatrix {
     }
 }
 //
-pub(crate) fn geo_pos(time: f64, observer: Observer) -> [f64; 3] {
+pub(crate) fn geo_pos(time: f64, observer: &structs::Observer) -> [f64; 3] {
     let gast = sidereal_time(time);
     let pos1 = terra(observer, gast);
     let pos2 = nutation(pos1, time, PD.into2000);
