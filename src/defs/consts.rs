@@ -11,14 +11,14 @@ pub const PD: PrecessDir = PrecessDir {
     into2000: "into2000",
 };
 //
-pub const ANGVEL: f64 = 7.2921150e-5;
+// pub const ANGVEL: f64 = 7.2921150e-5;
 pub const EARTH_FLATTENING: f64 = 0.996647180302104;
 
-pub const RAD2HOUR: f64 = 3.819718634205488;
+// pub const RAD2HOUR: f64 = 3.819718634205488;
 // # 12/pi = factor to convert radians to sidereal hours
 pub const KM_PER_AU: f64 = 1.4959787069098932e+8;
 //#<const> The number of kilometers per astronomical unit.
-pub const C_AUDAY: f64 = 173.1446326846693;
+// pub const C_AUDAY: f64 = 173.1446326846693;
 // #<const> The speed of light expressed in astronomical units per day.
 pub const EARTH_EQUATORIAL_RADIUS_KM: f64 = 6378.1366;
 pub const EARTH_EQUATORIAL_RADIUS_AU: f64 = EARTH_EQUATORIAL_RADIUS_KM / KM_PER_AU;
@@ -30,22 +30,22 @@ pub const ASEC2RAD: f64 = 4.848136811095359935899141e-6;
 pub const ASEC360: f64 = 1296000.0;
 pub const ARC: f64 = 3600.0 * 180.0 / PI;
 // # arcseconds per radian
-pub const EARTH_MOON_MASS_RATIO: f64 = 81.30056;
-pub const SUN_GM: f64 = 0.2959122082855911e-03;
-pub const JUPITER_GM: f64 = 0.2825345909524226e-06;
-pub const SATURN_GM: f64 = 0.8459715185680659e-07;
-pub const URANUS_GM: f64 = 0.1292024916781969e-07;
-pub const NEPTUNE_GM: f64 = 0.1524358900784276e-07;
+// pub const EARTH_MOON_MASS_RATIO: f64 = 81.30056;
+// pub const SUN_GM: f64 = 0.2959122082855911e-03;
+// pub const JUPITER_GM: f64 = 0.2825345909524226e-06;
+// pub const SATURN_GM: f64 = 0.8459715185680659e-07;
+// pub const URANUS_GM: f64 = 0.1292024916781969e-07;
+// pub const NEPTUNE_GM: f64 = 0.1524358900784276e-07;
 // ##
 pub const DAYS_PER_MILLENNIUM: f64 = 365250.0;
-pub const LON_INDEX: u32 = 0;
-pub const LAT_INDEX: u32 = 1;
-pub const RAD_INDEX: u32 = 2;
+// pub const LON_INDEX: u32 = 0;
+// pub const LAT_INDEX: u32 = 1;
+// pub const RAD_INDEX: u32 = 2;
 // ##
-pub const PLUTO_NUM_STATES: u32 = 51;
-pub const PLUTO_TIME_STEP: u32 = 29200;
-pub const PLUTO_DT: u32 = 146;
-pub const PLUTO_NSTEPS: u32 = 201;
+// pub const PLUTO_NUM_STATES: u32 = 51;
+// pub const PLUTO_TIME_STEP: u32 = 29200;
+// pub const PLUTO_DT: u32 = 146;
+// pub const PLUTO_NSTEPS: u32 = 201;
 // ##
 
 pub fn vsop() -> Vec<Vec<Vec<Vec<Vec<f64>>>>> {

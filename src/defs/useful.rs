@@ -1,10 +1,10 @@
-enum Ordering {
+enum _Ordering {
     Less,
     Equal,
     Greater,
 }
 
-pub fn binary_search(xs: &[i32], x: i32) -> bool {
+pub fn _binary_search(xs: &[i32], x: i32) -> bool {
     if xs.is_empty() {
         return false;
     }
@@ -14,17 +14,17 @@ pub fn binary_search(xs: &[i32], x: i32) -> bool {
         std::cmp::Ordering::Equal => return true,
         std::cmp::Ordering::Greater => &xs[..mid],
     };
-    binary_search(subslice, x)
+    _binary_search(subslice, x)
 }
 
-pub fn matrix() {
+pub fn _matrix() {
     // const matrix: Vec<Vec<Vec<usize>>> = vec![
     //     vec![vec![0, 1, 2, 3], vec![0, 1, 2, 3, 4], vec![0, 1, 2, 3, 4]],
     //     vec![vec![0, 1, 2, 3, 4], vec![0, 1, 2, 3], vec![0, 1, 2, 3, 4]],
     // ];
     // let num = matrix[1][0][2];
 
-    let dict = std::collections::HashMap::from([(1, 3), (2, 31)]);
+    let _dict = std::collections::HashMap::from([(1, 3), (2, 31)]);
 
     // loop iterator with index[] !
     let mut tmp = vec![1, 2, 3];

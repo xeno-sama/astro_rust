@@ -1,4 +1,4 @@
-use crate::consts::DAYS_PER_TROPICAL_YEAR;
+use crate::defs::consts::DAYS_PER_TROPICAL_YEAR;
 
 pub struct Timex {}
 //

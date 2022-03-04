@@ -1,5 +1,6 @@
 pub mod astronomy;
 pub mod consts;
+pub mod domes;
 pub mod espenac;
 pub mod funcs;
 pub mod moon;

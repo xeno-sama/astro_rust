@@ -1,10 +1,7 @@
 use crate::defs::consts;
-use crate::defs::funcs;
-use crate::defs::funcs::ecl2_equ_vec;
+// use crate::defs::funcs;
 use crate::defs::moon_vars;
 use crate::defs::structs;
-use crate::defs::structs::MoonPos;
-use crate::defs::structs::Vector;
 use num::complex::Complex;
 use num::complex::Complex64;
 use std::collections::HashMap;
@@ -34,7 +31,7 @@ fn arr2(xmin: i32, xmax: i32, ymin: i32, ymax: i32) -> HashMap<i32, HashMap<i32,
     _ar2
 }
 //
-fn calc_moon(time: f64) -> MoonPos {
+fn calc_moon(time: f64) -> structs::MoonPos {
     // let mut ex = arr2(-6, 6, 1, 4);
     let mut ex = arr2(-6, 6, 1, 4);
 
@@ -68,7 +65,7 @@ fn calc_moon(time: f64) -> MoonPos {
     let f = consts::PI2 * frac(0.25909118 + 1342.22782980 * t - 0.00000892 * t2) + df / consts::ARC;
     let d = consts::PI2 * frac(0.82736186 + 1236.85308708 * t - 0.00000397 * t2) + dd / consts::ARC;
 
-    let (mut i, mut j, mut max) = (0, 0, 0);
+    let (mut i, mut j, mut _max) = (0, 0, 0);
     let mut fac = 0.0;
     let mut arg = 0.0;
 
@@ -78,19 +75,19 @@ fn calc_moon(time: f64) -> MoonPos {
     while i <= 4 {
         if i == 1 {
             arg = l;
-            max = 4;
+            _max = 4;
             fac = 1.000002208;
         } else if i == 2 {
             arg = ls;
-            max = 3;
+            _max = 3;
             fac = 0.997504612 - 0.002495388 * t;
         } else if i == 3 {
             arg = f;
-            max = 4;
+            _max = 4;
             fac = 1.000002708 + 139.978 * dgam;
         } else {
             arg = d;
-            max = 6;
+            _max = 6;
             fac = 1.0;
         }
 
@@ -265,7 +262,7 @@ fn calc_moon(time: f64) -> MoonPos {
     let fin2 = PI / (180.0 * 3600.0) * lat_seconds;
     let fin3 = consts::ARC * consts::EARTH_EQUATORIAL_RADIUS_AU / (0.999953253 * sinpi);
 
-    MoonPos {
+    structs::MoonPos {
         lon: fin1,
         lat: fin2,
         dist: fin3,
@@ -275,21 +272,27 @@ fn calc_moon(time: f64) -> MoonPos {
 pub(crate) fn geo_moon(time: f64) -> f64 {
     //Вычисление геоцентрической позиции Луны
     let mp = calc_moon(time);
-
-    // Преобразование геоцентрических эклиптических сферических координат в прямоугольные/Cartesian
-    let dist_cos_lat = mp.dist * mp.lat.cos();
-    let gepos = [
-        dist_cos_lat * mp.lon.cos(),
-        dist_cos_lat * mp.lon.sin(),
-        mp.dist * mp.lat.sin(),
-    ];
-
-    // Преобразование эклиптических координат в экваториальные
-    let mpos1 = ecl2_equ_vec(time, gepos.to_vec());
-
-    // Convert from mean equinox of date to J2000
-    let mpos2 = funcs::precession(mpos1, time, consts::PD.into2000);
-
-    // return Vector { x: mpos2[0], y: mpos2[1], z: mpos2[2], t: time }
     mp.lon.to_degrees()
 }
+
+// pub(crate) fn geo_moon(time: f64) -> f64 {
+//     //Вычисление геоцентрической позиции Луны
+//     let mp = calc_moon(time);
+
+//     // Преобразование геоцентрических эклиптических сферических координат в прямоугольные/Cartesian
+//     let dist_cos_lat = mp.dist * mp.lat.cos();
+//     let gepos = [
+//         dist_cos_lat * mp.lon.cos(),
+//         dist_cos_lat * mp.lon.sin(),
+//         mp.dist * mp.lat.sin(),
+//     ];
+
+//     // Преобразование эклиптических координат в экваториальные
+//     let mpos1 = funcs::ecl2_equ_vec(time, gepos.to_vec());
+
+//     // Convert from mean equinox of date to J2000
+//     let mpos2 = funcs::precession(mpos1, time, consts::PD.into2000);
+
+//     // return Vector { x: mpos2[0], y: mpos2[1], z: mpos2[2], t: time }
+//     mp.lon.to_degrees()
+// }

@@ -1,8 +1,5 @@
-// #![allow(unused_variables, unused_assignments, unused_imports, dead_code)]
 use crate::defs::consts::*;
-use crate::defs::structs::*;
 use chrono::prelude::*;
-
 use super::structs;
 //
 pub(crate) fn fmod(x: f64, y: f64) -> f64 {
@@ -25,12 +22,12 @@ pub(crate) fn time_24(t0: f64) -> f64 {
     time24
 }
 //
-pub(crate) fn time_ra(ra: f64) -> Vec<i32> {
-    let h_ra = (ra / 15.0) as i32;
-    let m_ra = ((ra / 15.0 - (h_ra as f64)) * 60.0) as i32;
-    let s_ra = (((ra / 15.0 - (h_ra as f64)) * 60.0) % 1.0 * 60.0) as i32;
-    [h_ra, m_ra, s_ra].to_vec()
-}
+// pub(crate) fn time_ra(ra: f64) -> Vec<i32> {
+//     let h_ra = (ra / 15.0) as i32;
+//     let m_ra = ((ra / 15.0 - (h_ra as f64)) * 60.0) as i32;
+//     let s_ra = (((ra / 15.0 - (h_ra as f64)) * 60.0) % 1.0 * 60.0) as i32;
+//     [h_ra, m_ra, s_ra].to_vec()
+// }
 //
 pub(crate) fn num_date(data: DateTime<Utc>) -> f64 {
     let m1 = 7 * (data.year() + (data.month() as i32 + 9) / 12) / 4;
@@ -41,9 +38,9 @@ pub(crate) fn num_date(data: DateTime<Utc>) -> f64 {
     _d as f64 + ut / 24.0
 }
 //
-pub(crate) fn local_sid_time(hour: u32, minute: u32, lst: f64, lon: f64) -> f64 {
+pub(crate) fn local_sid_time(hour: u32, minute: u32, l_sun: f64, lon: f64) -> f64 {
     let ut = hour as f64 + (minute as f64 / 60.0);
-    let gmst = time_24(lst / 15.0 + 12.0);
+    let gmst = time_24(l_sun / 15.0 + 12.0);
     let sid_time = gmst + ut + lon / 15.0;
     let sid_time_deg = sid_time * 15.0;
     sid_time_deg
@@ -104,7 +101,7 @@ pub(crate) fn precession(pos: [f64; 3], time: f64, direction: &str) -> [f64; 3] 
     rotate(r, pos)
 }
 //
-pub(crate) fn precession_rot(time: f64, direction: &str) -> RotationMatrix {
+pub(crate) fn precession_rot(time: f64, direction: &str) -> structs::RotationMatrix {
     let mut eps0 = 84381.406;
     let t = time / 36525.0;
 
@@ -145,11 +142,11 @@ pub(crate) fn precession_rot(time: f64, direction: &str) -> RotationMatrix {
     let zz = -sc * cb * sa + cc * ca;
 
     if direction == PD.into2000 {
-        RotationMatrix {
+        structs::RotationMatrix {
             rot: [[xx, yx, zx], [xy, yy, zy], [xz, yz, zz]],
         }
     } else {
-        RotationMatrix {
+        structs::RotationMatrix {
             rot: [[xx, xy, xz], [yx, yy, yz], [zx, zy, zz]],
         }
     }
@@ -163,24 +160,24 @@ pub(crate) fn mean_oblig(time: f64) -> f64 {
         + 84381.406;
     asec
 }
-
-pub(crate) fn ecl2_equ_vec(time: f64, ecl: Vec<f64>) -> [f64; 3] {
-    let obl = mean_oblig(time).to_radians();
-    let obl_cos = obl.cos();
-    let obl_sin = obl.sin();
-    [
-        ecl[0],
-        ecl[1] * obl_cos - ecl[2] * obl_sin,
-        ecl[2] * obl_sin + ecl[2] * obl_cos,
-    ]
-}
+// 
+// pub(crate) fn ecl2_equ_vec(time: f64, ecl: Vec<f64>) -> [f64; 3] {
+//     let obl = mean_oblig(time).to_radians();
+//     let obl_cos = obl.cos();
+//     let obl_sin = obl.sin();
+//     [
+//         ecl[0],
+//         ecl[1] * obl_cos - ecl[2] * obl_sin,
+//         ecl[2] * obl_sin + ecl[2] * obl_cos,
+//     ]
+// }
 //
 pub(crate) fn nutation(pos: [f64; 3], time: f64, direction: &str) -> [f64; 3] {
     let r = nutation_rot(time, direction);
     rotate(r, pos)
 }
 // разобраться с конфликтом RotationMatrix и [f64; 3]
-pub(crate) fn rotate(rot: RotationMatrix, vec: [f64; 3]) -> [f64; 3] {
+pub(crate) fn rotate(rot: structs::RotationMatrix, vec: [f64; 3]) -> [f64; 3] {
     [
         rot.rot[0][0] * vec[0] + rot.rot[1][0] * vec[1] + rot.rot[2][0] * vec[2],
         rot.rot[0][1] * vec[0] + rot.rot[1][1] * vec[1] + rot.rot[2][1] * vec[2],
@@ -188,7 +185,7 @@ pub(crate) fn rotate(rot: RotationMatrix, vec: [f64; 3]) -> [f64; 3] {
     ]
 }
 //
-pub(crate) fn nutation_rot(time: f64, direction: &str) -> RotationMatrix {
+pub(crate) fn nutation_rot(time: f64, direction: &str) -> structs::RotationMatrix {
     let tilt = iau2000b(time);
 
     let oblm = (tilt.mobl).to_radians();
@@ -214,13 +211,13 @@ pub(crate) fn nutation_rot(time: f64, direction: &str) -> RotationMatrix {
     if direction == PD.from2000
     // convert J2000 to of-date
     {
-        RotationMatrix {
+        structs::RotationMatrix {
             rot: [[xx, xy, xz], [yx, yy, yz], [zx, zy, zz]],
         }
     } else
     // direction == PrecessDir.into2000 convert of-date to J2000
     {
-        RotationMatrix {
+        structs::RotationMatrix {
             rot: [[xx, yx, zx], [xy, yy, zy], [xz, yz, zz]],
         }
     }
@@ -235,7 +232,7 @@ pub(crate) fn geo_pos(time: f64, observer: &structs::Observer) -> [f64; 3] {
     outpos
 }
 //
-pub(crate) fn iau2000b(time: f64) -> Etilt {
+pub(crate) fn iau2000b(time: f64) -> structs::Etilt {
     //   double t, el, elp, f, d, om, dp, de, arg, sarg, carg, dpsi, deps;
     let t = time / 36525.0;
     let el = fmod(485868.249036 + t * 1717915923.2178, ASEC360) * ASEC2RAD;
@@ -717,7 +714,7 @@ pub(crate) fn iau2000b(time: f64) -> Etilt {
     let ee = dpsi * mobl.to_radians().cos() / 15.0;
 
     // Etilt(dpsi, deps, mobl, tobl, tt, ee)
-    Etilt {
+    structs::Etilt {
         dpsi,
         deps,
         mobl,

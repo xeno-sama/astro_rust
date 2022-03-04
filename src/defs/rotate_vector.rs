@@ -5,7 +5,7 @@ use super::structs::EclipticCoordinates;
 use super::structs::TerseVector;
 use super::structs::Vector;
 //
-pub(crate) fn ecliptic(vec: Vector, time: f64) -> EclipticCoordinates {
+pub(crate) fn ecliptic(vec: Vector) -> EclipticCoordinates {
     //Преобразование прямоугольных в эклиптические координаты.
     //Based on NOVAS functions equ2ecl() and equ2ecl_vec().
     let ob2000 = 0.40909260059599012; // mean obliquity of the J2000 ecliptic in radians
