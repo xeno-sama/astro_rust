@@ -1,7 +1,5 @@
-This project contains two astronomical processors.
+This project contains astronomical processor. It calculates Sun, Moon, and planet positions.
 
-1: Simplified. The theory and formulas were taken from the website http://stjarnhimlen.se .
+The source code is taken in the C programming language from the cosinekitty/astronomy repository.
 
-2: Accurate. The source code is taken in the C programming language from the cosinekitty/astronomy repository.
-
-Both astro processors have been rewritten in the Dart and RUST languages.
+Astro processor have been rewritten in the RUST language.
