@@ -1,15 +1,23 @@
-#![allow(
-    unused_assignments,
-)]
+#![allow(unused_variables, unused_assignments, unused_imports, dead_code, unused_mut)]
 // #[derive(Debug)]  /&'static
+use std::collections::HashMap;
 mod defs;
 use chrono::prelude::*;
 use defs::astronomy;
+use defs::consts;
+use defs::funcs;
+use defs::pluto;
+use defs::moon;
 use defs::structs;
+use chrono::{Duration, TimeZone, Utc};
 use std::time::Instant;
 
 fn main() {
     let start = Instant::now();
+
+    let body_list: [usize; 11] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    // let body_list: [usize; 5] = [0, 1, 2, 3, 4];
+    // Mercury_0,Venus_1,Earth_2,Mars_3,Jupiter_4,Saturn_5,Uranus_6,Neptune_7,Pluto_8,Sun_9,Moon_10
 
     let natal = structs::Natal {
         year: 1977,
@@ -22,30 +30,35 @@ fn main() {
         lon: 74.6,
     };
 
-    let data =
-        Utc.ymd(natal.year, natal.month, natal.day)
-            .and_hms(natal.hour, natal.minute, natal.sec);
-
+    let mut data = Utc.ymd(1977, 5, 27).and_hms(16, 52, 0);
+   
     let (observer, time) = astronomy::parse_args(data, natal.lat, natal.lon);
 
-    let body_list: [usize; 11] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-    // Mercury_0,Venus_1,Earth_2,Mars_3,Jupiter_4,Saturn_5,Uranus_6,Neptune_7,Pluto_8,Sun_9,Moon_10
+    let mut helio = vec![];
+    let mut geo = vec![];
+    let mut dm = vec![];
 
     for body in body_list {
-        let gm = astronomy::helio_lon(body, time);
-        println!("{gm}");
+        helio.push(astronomy::helio_lon(body, time));
     }
 
-    println!("");
     for body in body_list {
-        let gl = astronomy::geo_lon(body, time, &observer);
-        println!("{}", gl);
+        geo.push(astronomy::geo_lon(body, time, &observer));
     }
 
+    dm = defs::domes::domes(data, natal.lat, natal.lon);
+    println!("\n{:?}", helio);
+    println!("\n{:?}", geo);
+    println!("{}", data);
+    println!("\n{:?}", dm[0]);
+        
     
-    let dm = defs::domes::domes(data, natal.lat, natal.lon);
-    println!("\n{:?}", dm);
 
     let duration = start.elapsed().as_secs_f64();
     println!("\ntime elapsed {:?}", duration)
 }
+
+ // let data_end = Utc.ymd(1977, 5, 28).and_hms(16, 52, 0);
+    // while data < data_end {
+    //     data = data + (Duration::days(1));
+    // }

@@ -1,5 +1,5 @@
-#![allow(unused_variables, unused_assignments, unused_imports, dead_code)]
-#[derive(Debug)]
+// #![allow(unused_variables, unused_assignments, unused_imports, dead_code)]
+// #[derive(Debug)]
 //
 pub struct Vector {
     pub x: f64,
@@ -7,11 +7,11 @@ pub struct Vector {
     pub z: f64,
     pub t: f64,
 }
-impl Vector {
-    pub fn length(&self) -> f64 {
-        (self.x.powf(2.0) + self.y.powf(2.0) + self.z.powf(2.0)).sqrt()
-    } //Returns the length of the vector in AU. (xˆ2+yˆ2+zˆ2)
-}
+// impl Vector {
+//     pub fn length(&self) -> f64 {
+//         (self.x.powf(2.0) + self.y.powf(2.0) + self.z.powf(2.0)).sqrt()
+//     } //Returns the length of the vector in AU. (xˆ2+yˆ2+zˆ2)
+// }
 
 pub struct EclipticCoordinates {
     // Ecliptic angular and Cartesian coordinates.
@@ -44,24 +44,24 @@ impl TerseVector {
     }
 }
 //  Return magnitude squared of this vector.
-impl TerseVector {
-    pub fn quadrature(&self) -> f64 {
-        self.x.powf(2.0) + self.y.powf(2.0) + self.z.powf(2.0)
-    }
-}
-//  Return the average of this vector and another vector.
-impl TerseVector {
-    pub fn mean(&self, other: TerseVector) -> TerseVector {
-        TerseVector {
-            x: (self.x + other.x) / 2.0,
-            y: (self.y + other.y) / 2.0,
-            z: (self.z + other.z) / 2.0,
-        }
-    }
-}
+// impl TerseVector {
+//     pub fn quadrature(&self) -> f64 {
+//         self.x.powf(2.0) + self.y.powf(2.0) + self.z.powf(2.0)
+//     }
+// }
+// //  Return the average of this vector and another vector.
+// impl TerseVector {
+//     pub fn mean(&self, other: TerseVector) -> TerseVector {
+//         TerseVector {
+//             x: (self.x + other.x) / 2.0,
+//             y: (self.y + other.y) / 2.0,
+//             z: (self.z + other.z) / 2.0,
+//         }
+//     }
+// }
 // RotationMatrix - contains a rotation matrix 3x3 that can be used to
 // transform one coordinate system into another.
-#[derive(Debug)]
+// #[derive(Debug)]
 pub struct RotationMatrix {
     // pub rot: [[f64; 3]; 3],
     pub rot: [[f64; 3]; 3],

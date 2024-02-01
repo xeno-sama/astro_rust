@@ -1,10 +1,9 @@
 [package]
 edition = "2021"
-name = "astro_mc_rust"
-version = "0.1.0"
+name = "astro_rust"
+version = "0.1.1"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-chrono = "0.4.19"
-num = "0.4.0"
+chrono = "0.4.33"
+num = "0.4.1"

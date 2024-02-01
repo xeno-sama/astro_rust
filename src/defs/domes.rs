@@ -9,7 +9,7 @@ pub(crate) fn domes(dat: DateTime<Utc>, lat: f64, lon: f64) -> Vec<f64> {
     let w_sun = 282.9404 + 4.70935E-5 * d;
     let m_sun = funcs::deg_360(356.0470 + 0.9856002585 * d);
     let l_sun = funcs::deg_360(w_sun + m_sun); // Звездное время
-   
+    println!("{} {} {}", d, lat, lon);
     let ra = funcs::local_sid_time(hour, minute, l_sun, lon); // прямое восхождение
 
     let pv = ra.to_radians();
@@ -25,7 +25,8 @@ pub(crate) fn domes(dat: DateTime<Utc>, lat: f64, lon: f64) -> Vec<f64> {
             .atan()
             .to_degrees(),
     );
-
+    println!("{} {} {}", ra, ecl, e);
+    println!("{}", asc);
     // c - вспомогательный угол для куспидов
     let c = (-e.tan() * pv.sin() * lat.tan()).acos();
 
@@ -112,6 +113,8 @@ pub(crate) fn domes(dat: DateTime<Utc>, lat: f64, lon: f64) -> Vec<f64> {
     } else {
         &xii + 180.0
     };
-
+    // println!("{}", d);
+    // println!("{}", dat);
+    // println!("{}", asc);
     [asc, ii, iii, ic, v, vi, ds, viii, ix, mc, xi, xii].to_vec()
 }

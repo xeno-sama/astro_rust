@@ -50,9 +50,10 @@ fn helio_vector(body: usize, time: f64) -> structs::Vector {
 }
 //
 pub(crate) fn helio_lon(body: usize, time: f64) -> f64 {
-    if body == 9 && body == 10 {
+    if body == 9 {
         0.0
-    } else if body == 8 {
+    } else if body == 10 {0.01}
+    else if body == 8 {
         pluto::calc_pluto(time)[0]
     } else {
         let hv = helio_vector(body, time);
